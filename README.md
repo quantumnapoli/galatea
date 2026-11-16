@@ -1,6 +1,10 @@
 # Galatea
 
-Sito di presentazione di Galatea, realizzato come sito statico con animazioni GSAP, immagini WebP e video ottimizzato.
+Sito di presentazione di Galatea (in inglese), realizzato come sito statico con animazioni GSAP 3.13 (ScrollTrigger, ScrollSmoother, SplitText, CustomEase), immagini WebP e video ottimizzato.
+
+Il form di richiesta disponibilità usa Netlify Forms (`charter-enquiry`): le richieste arrivano nella dashboard Netlify, sezione Forms.
+
+Il logo vettoriale è in `public/media/galatea-logo.svg` (sfondo trasparente, colore `currentColor`); versioni PNG trasparenti in `galatea-logo-white.png` e `galatea-logo-ink.png`.
 
 ## Sviluppo locale
 
