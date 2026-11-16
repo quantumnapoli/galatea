@@ -33,9 +33,9 @@
 
   /* ---------- floating "Book now" ---------- */
   const fab = $('.fab');
-  let pastBooking = false, nearEnquiry = false;
+  let pastBooking = false, nearEnquiry = false, atFooter = false;
   function updateFab() {
-    const show = pastBooking && !nearEnquiry && !menuOpen;
+    const show = pastBooking && !nearEnquiry && !atFooter && !menuOpen;
     fab.classList.toggle('show', show);
     fab.setAttribute('aria-hidden', String(!show));
     fab.tabIndex = show ? 0 : -1;
@@ -43,6 +43,7 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([en]) => { pastBooking = !en.isIntersecting && en.boundingClientRect.top < 0; updateFab(); }).observe($('.booking-card'));
     new IntersectionObserver(([en]) => { nearEnquiry = en.isIntersecting; updateFab(); }, { rootMargin: '0px 0px -30% 0px' }).observe($('#enquire'));
+    new IntersectionObserver(([en]) => { atFooter = en.isIntersecting; updateFab(); }).observe($('.footer-bottom'));
   }
 
   const goToBooking = () => {

@@ -359,6 +359,9 @@ h2 em{color:var(--brass)}
 .footer-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(243,239,230,.55);border-top:1px solid var(--line-l);padding-top:28px}
 .footer-bottom nav{display:flex;gap:28px}
 .footer-bottom a:hover{color:var(--brass-2)}
+.footer-credit{margin:22px 0 0;text-align:center;font-size:11px;letter-spacing:.14em;color:rgba(243,239,230,.45)}
+.footer-credit a{color:var(--brass-2);background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;padding-bottom:2px;transition:color .3s,background-size .5s var(--ease)}
+.footer-credit a:hover{color:var(--cream);background-size:0 1px}
 
 /* lightbox */
 .lightbox{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;border:0;padding:0;background:rgba(4,12,16,.96);color:var(--cream);overflow:hidden}
