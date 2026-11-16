@@ -1,0 +1,6 @@
+.netlify/
+node_modules/
+/*.png
+/*.mp4
+/*.ai
+.DS_Store
