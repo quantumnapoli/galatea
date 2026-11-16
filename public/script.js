@@ -33,6 +33,56 @@
   const footerLogo = logoSvg.cloneNode(true);
   $('.footer-logo').appendChild(footerLogo);
 
+
+  /* ---------- booking bar ---------- */
+  const bForm = $('#booking-form');
+  const bStart = $('#b-start'), bEnd = $('#b-end'), bGuests = $('#b-guests');
+  const bError = $('.booking-error');
+  const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  const today = iso(new Date());
+  [bStart, bEnd, $('#f-start'), $('#f-end')].forEach(i => { i.min = today; });
+  const markEmpty = i => i.toggleAttribute('data-empty', !i.value);
+  [bStart, bEnd].forEach(i => { markEmpty(i); i.addEventListener('input', () => markEmpty(i)); });
+  bStart.addEventListener('change', () => {
+    bEnd.min = bStart.value || today;
+    if (bEnd.value && bEnd.value < bStart.value) { bEnd.value = bStart.value; markEmpty(bEnd); }
+    bError.textContent = '';
+  });
+  const clampGuests = v => Math.min(+bGuests.max, Math.max(+bGuests.min, Number.isFinite(v) ? v : 1));
+  const syncSteps = () => $$('.step', bForm).forEach(b => { b.disabled = (+b.dataset.step < 0 && +bGuests.value <= +bGuests.min) || (+b.dataset.step > 0 && +bGuests.value >= +bGuests.max); });
+  $$('.step', bForm).forEach(b => b.addEventListener('click', () => {
+    bGuests.value = clampGuests(+bGuests.value + +b.dataset.step);
+    syncSteps();
+    if (window.gsap && !reduced) gsap.fromTo(bGuests, { y: +b.dataset.step * -8, opacity: 0 }, { y: 0, opacity: 1, duration: .35, ease: 'power3.out' });
+  }));
+  bGuests.addEventListener('change', () => { bGuests.value = clampGuests(parseInt(bGuests.value, 10)); syncSteps(); });
+  syncSteps();
+  bForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!bStart.value) {
+      bError.textContent = 'Please choose a starting date.';
+      bStart.focus();
+      if (window.gsap && !reduced) gsap.fromTo(bStart.parentElement, { x: -8 }, { x: 0, duration: .6, ease: 'elastic.out(1, .3)' });
+      return;
+    }
+    bError.textContent = '';
+    $('#f-start').value = bStart.value;
+    $('#f-end').value = bEnd.value || bStart.value;
+    $('#f-guests').value = bGuests.value;
+    const target = $('#enquire');
+    const focusName = () => $('#f-name').focus({ preventScroll: true });
+    if (smoother) {
+      smoother.scrollTo(target, true, 'top top');
+      setTimeout(() => {
+        focusName();
+        gsap.fromTo('.enquire-form', { boxShadow: '0 0 0 0 rgba(201,164,106,.9)' }, { boxShadow: '0 0 0 18px rgba(201,164,106,0)', duration: 1.4, ease: 'power2.out' });
+      }, 1300);
+    } else {
+      target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      setTimeout(focusName, 800);
+    }
+  });
+
   /* ---------- lightbox ---------- */
   const dialog = $('.lightbox');
   const dImg = $('img', dialog);
@@ -102,6 +152,7 @@
   gsap.set(heroChars, { yPercent: 115, rotate: 6 });
   gsap.set('.hero-kicker, .hero-copy, .hero-actions .btn, .hero-bottom', { opacity: 0, y: 30 });
   gsap.set('.site-header', { yPercent: -100 });
+  gsap.set('.booking-card', { y: 90, opacity: 0 });
   gsap.set('.hero-frame', { clipPath: 'inset(22% 26% 22% 26% round 8px)' });
   gsap.set('.hero-media', { scale: 1.45 });
 
@@ -125,6 +176,8 @@
     .to('.hero-copy, .hero-actions .btn', { opacity: 1, y: 0, duration: 1.2, stagger: .1 }, 'out+=1.8')
     .to('.hero-bottom', { opacity: 1, y: 0, duration: 1 }, 'out+=2')
     .to('.site-header', { yPercent: 0, duration: 1.2 }, 'out+=1.8')
+    .to('.booking-card', { y: 0, opacity: 1, duration: 1.4, ease: 'expo.out' }, 'out+=2.1')
+    .from('.booking-fields > *', { y: 24, opacity: 0, duration: 1, stagger: .08 }, 'out+=2.3')
     .add(() => { loader.remove(); smoother.paused(false); ScrollTrigger.refresh(); }, 'out+=1.9');
 
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => intro.play());

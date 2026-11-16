@@ -86,7 +86,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero-media video{width:100%;height:100%;object-fit:cover}
 .hero-media{transform-origin:50% 60%}
 .hero-shade{background:radial-gradient(120% 90% at 20% 80%,rgba(6,20,26,.78),rgba(6,20,26,.15) 60%),linear-gradient(180deg,rgba(6,20,26,.5),transparent 28%,transparent 60%,rgba(6,20,26,.7))}
-.hero-content{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(90px,14vh,150px)}
+.hero-content{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(150px,19vh,200px)}
 .eyebrow,.overline{font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase}
 .hero-kicker{display:flex;align-items:center;gap:16px;margin:0 0 10px;color:var(--brass-2)}
 .line{width:46px;height:1px;background:currentColor}
@@ -97,11 +97,60 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero-foot{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-top:38px;flex-wrap:wrap}
 .hero-copy{font-family:var(--serif);font-size:clamp(20px,1.8vw,26px);line-height:1.35;margin:0;font-style:italic;font-weight:300;color:rgba(243,239,230,.85)}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-.hero-bottom{position:absolute;bottom:30px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(243,239,230,.6)}
+.hero-bottom{position:absolute;bottom:118px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(243,239,230,.6)}
 .scroll-hint{display:flex;align-items:center;gap:12px}
 .scroll-hint i{position:relative;width:1px;height:28px;background:rgba(243,239,230,.25);overflow:hidden}
 .scroll-hint i::after{content:"";position:absolute;left:0;top:-100%;width:100%;height:100%;background:var(--brass);animation:drip 2s var(--ease) infinite}
 @keyframes drip{to{top:100%}}
+
+
+/* ---------- BOOKING BAR ---------- */
+.booking{position:relative;z-index:3;background:var(--abyss);padding:0 var(--pad) clamp(40px,5vw,70px)}
+.booking-card{position:relative;margin:-96px auto 0;max-width:1240px;display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,4vw,64px);align-items:end;padding:clamp(24px,2.6vw,38px) clamp(22px,3vw,44px);border-radius:14px;background:rgba(10,30,38,.78);border:1px solid var(--line-l);box-shadow:0 40px 80px -30px rgba(0,0,0,.6);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);color:var(--cream)}
+.booking-head .overline{margin-bottom:10px}
+.booking-head h2{font-size:clamp(30px,2.6vw,42px);line-height:1;white-space:nowrap}
+.booking-head h2 em{color:var(--brass-2)}
+.booking-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:16px;align-items:end}
+.b-field{min-width:0}
+.b-field label{display:block;font-size:13px;font-weight:500;margin:0 0 8px;color:rgba(243,239,230,.85)}
+.b-input{position:relative;display:flex;align-items:center;height:58px;border:1px solid rgba(243,239,230,.22);border-radius:10px;background:rgba(243,239,230,.04);transition:border-color .3s,background .3s}
+.b-input:hover{border-color:rgba(243,239,230,.4)}
+.b-input:focus-within{border-color:var(--brass);background:rgba(243,239,230,.07)}
+.b-input input{flex:1;min-width:0;width:100%;height:100%;border:0;background:transparent;outline:none;color:var(--cream);font-size:15px;padding:0 44px 0 16px;color-scheme:dark}
+.b-input input[type=date]::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:auto;height:auto;opacity:0;cursor:pointer}
+.b-input input[type=date]:invalid,.b-input input[type=date][data-empty]{color:rgba(243,239,230,.45)}
+.b-icon{position:absolute;right:14px;width:20px;height:20px;pointer-events:none;color:var(--brass-2)}
+.b-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.b-stepper{padding:0 6px}
+.b-stepper input{padding:0 4px;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield}
+.b-stepper input::-webkit-outer-spin-button,.b-stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.b-unit{flex:1;font-size:15px;color:rgba(243,239,230,.6);padding-left:6px}
+.step{width:40px;height:40px;flex:none;border-radius:8px;border:0;background:rgba(243,239,230,.08);color:var(--cream);font-size:20px;line-height:1;cursor:pointer;transition:background .3s,color .3s}
+.step:hover{background:var(--brass);color:var(--abyss)}
+.step:disabled{opacity:.35;pointer-events:none}
+.booking-submit{height:58px;border-radius:10px;padding:0 10px 0 24px}
+.booking-submit .btn-arrow{background:var(--abyss);color:var(--brass-2);border-radius:7px;width:40px;height:40px}
+.booking-error{grid-column:1/-1;margin:0;min-height:0;font-size:13px;color:#f0b38a}
+.booking-error:empty{display:none}
+.field-row-3{grid-template-columns:1fr 1fr .7fr}
+.field-fixed label{transform:translateY(-24px) scale(.72);color:var(--brass-2)}
+.field input[type=date]{color-scheme:dark}
+@media (max-width:1100px){
+  .booking-card{grid-template-columns:1fr;gap:22px}
+  .booking-head h2{white-space:normal}
+}
+@media (max-width:860px){
+  .booking-card{margin-top:-60px}
+  .booking-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .booking-submit{grid-column:1/-1;justify-content:space-between}
+  .b-field:nth-child(3){grid-column:1/-1}
+}
+@media (max-width:560px){
+  .booking{padding-left:16px;padding-right:16px}
+  .booking-fields{gap:12px}
+  .field-row-3{grid-template-columns:1fr 1fr}
+  .field-row-3 .field:last-child{grid-column:1/-1}
+}
 
 /* ---------- MARQUEE ---------- */
 .marquee{background:var(--abyss);color:var(--cream);overflow:hidden;padding:30px 0;border-top:1px solid var(--line-l)}
@@ -253,7 +302,8 @@ h2 em{color:var(--brass)}
   #navigation a::after{display:none}
   #navigation a:hover{color:var(--brass-2)}
   .ht-line:nth-child(2){padding-left:0}
-  .hero-content{bottom:100px}
+  .hero-content{bottom:110px}
+  .hero-bottom{display:none}
   .hero-bottom span:nth-child(3){display:none}
   .spaces-pin{height:auto;flex-direction:column;align-items:stretch;padding:clamp(90px,12vw,170px) var(--pad)}
   .spaces-intro{flex:none}
