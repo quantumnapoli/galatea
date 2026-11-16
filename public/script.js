@@ -91,7 +91,7 @@
 
   /* ---------- booking bar ---------- */
   const bForm = $('#booking-form');
-  const bStart = $('#b-start'), bEnd = $('#b-end'), bGuests = $('#b-guests');
+  const bStart = $('#b-start'), bEnd = $('#b-end');
   const bError = $('.booking-error');
   const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   const today = iso(new Date());
@@ -103,15 +103,6 @@
     if (bEnd.value && bEnd.value < bStart.value) { bEnd.value = bStart.value; markEmpty(bEnd); }
     bError.textContent = '';
   });
-  const clampGuests = v => Math.min(+bGuests.max, Math.max(+bGuests.min, Number.isFinite(v) ? v : 1));
-  const syncSteps = () => $$('.step', bForm).forEach(b => { b.disabled = (+b.dataset.step < 0 && +bGuests.value <= +bGuests.min) || (+b.dataset.step > 0 && +bGuests.value >= +bGuests.max); });
-  $$('.step', bForm).forEach(b => b.addEventListener('click', () => {
-    bGuests.value = clampGuests(+bGuests.value + +b.dataset.step);
-    syncSteps();
-    if (window.gsap && !reduced) gsap.fromTo(bGuests, { y: +b.dataset.step * -8, opacity: 0 }, { y: 0, opacity: 1, duration: .35, ease: 'power3.out' });
-  }));
-  bGuests.addEventListener('change', () => { bGuests.value = clampGuests(parseInt(bGuests.value, 10)); syncSteps(); });
-  syncSteps();
   bForm.addEventListener('submit', e => {
     e.preventDefault();
     if (!bStart.value) {
@@ -123,7 +114,6 @@
     bError.textContent = '';
     $('#f-start').value = bStart.value;
     $('#f-end').value = bEnd.value || bStart.value;
-    $('#f-guests').value = bGuests.value;
     const target = $('#enquire');
     const focusName = () => $('#f-name').focus({ preventScroll: true });
     if (smoother) {
@@ -232,7 +222,7 @@
     delete data.botcheck;
     Object.keys(data).forEach(k => { if (data[k] === '') delete data[k]; });
     const when = [fmtDate(data['start-date']), fmtDate(data['end-date'])].filter(Boolean).join(' → ');
-    data.subject = `New charter request — ${data.name}${when ? ', ' + when : ''}${data.guests ? ', ' + data.guests + ' guests' : ''}`;
+    data.subject = `New charter request — ${data.name}${when ? ', ' + when : ''}`;
     data.replyto = data.email;
     btnText.textContent = 'Sending…';
     try {

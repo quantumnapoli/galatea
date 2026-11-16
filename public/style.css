@@ -109,7 +109,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .booking-head .overline{margin-bottom:10px}
 .booking-head h2{font-size:clamp(30px,2.6vw,42px);line-height:1;white-space:nowrap}
 .booking-head h2 em{color:var(--brass-2)}
-.booking-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:16px;align-items:end}
+.booking-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:16px;align-items:end}
 .b-field{min-width:0}
 .b-field label{display:block;font-size:13px;font-weight:500;margin:0 0 8px;color:rgba(243,239,230,.85)}
 .b-input{position:relative;display:flex;align-items:center;height:58px;border:1px solid rgba(243,239,230,.22);border-radius:10px;background:rgba(243,239,230,.04);transition:border-color .3s,background .3s}
@@ -141,7 +141,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:860px){
   .booking-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
   .booking-submit{grid-column:1/-1;justify-content:space-between}
-  .b-field:nth-child(3){grid-column:1/-1}
 }
 @media (max-width:560px){
   .booking-fields{gap:12px}

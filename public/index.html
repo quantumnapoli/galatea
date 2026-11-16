@@ -106,15 +106,6 @@
                 <label for="b-end">Ending date</label>
                 <div class="b-input"><input id="b-end" name="end" type="date"><span class="b-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span></div>
               </div>
-              <div class="b-field">
-                <label for="b-guests">Guests</label>
-                <div class="b-input b-stepper">
-                  <button type="button" class="step" data-step="-1" aria-label="Remove a guest">−</button>
-                  <input id="b-guests" name="guests" type="number" inputmode="numeric" min="1" max="12" value="2" aria-describedby="b-guests-hint">
-                  <span class="b-unit" id="b-guests-hint">people</span>
-                  <button type="button" class="step" data-step="1" aria-label="Add a guest">+</button>
-                </div>
-              </div>
               <button class="btn btn-solid booking-submit magnetic" type="submit"><span class="btn-text">Request booking</span><span class="btn-arrow">→</span></button>
             </div>
             <p class="booking-error" role="alert"></p>
@@ -239,7 +230,6 @@
               <input type="hidden" name="subject" value="New charter request — Galatea website">
               <input type="hidden" name="from_name" value="Galatea website">
               <input type="hidden" name="redirect" value="">
-              <input type="hidden" id="f-guests" name="guests" value="">
               <p class="hp"><label>Leave empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></p>
               <div class="field"><input id="f-name" name="name" type="text" autocomplete="name" required placeholder=" "><label for="f-name">Full name</label></div>
               <div class="field"><input id="f-email" name="email" type="email" autocomplete="email" required placeholder=" "><label for="f-email">Email</label></div>
