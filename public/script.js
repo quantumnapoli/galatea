@@ -9,23 +9,72 @@
   $('#year').textContent = new Date().getFullYear();
 
   const menu = $('.menu-toggle');
-  const nav = $('#navigation');
+  const offcanvas = $('#offcanvas');
+  const menuLabel = $('.sr-only', menu);
+  let menuOpen = false;
   const setMenu = open => {
+    if (open === menuOpen) return;
+    menuOpen = open;
     menu.setAttribute('aria-expanded', String(open));
-    nav.classList.toggle('open', open);
+    menuLabel.textContent = open ? 'Close menu' : 'Open menu';
+    offcanvas.classList.toggle('open', open);
+    offcanvas.setAttribute('aria-hidden', String(!open));
+    offcanvas.inert = !open;
+    document.documentElement.classList.toggle('menu-open', open);
+    $('.site-header').classList.remove('hidden');
     if (smoother) smoother.paused(open);
+    else document.documentElement.style.overflow = open ? 'hidden' : '';
+    updateFab();
+    if (open) setTimeout(() => $('.oc-nav a').focus({ preventScroll: true }), 350);
   };
-  menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') !== 'true'));
+  menu.addEventListener('click', () => setMenu(!menuOpen));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) { setMenu(false); menu.focus(); } });
+  window.matchMedia('(min-width: 861px)').addEventListener('change', m => { if (m.matches) setMenu(false); });
+
+  /* ---------- floating "Book now" ---------- */
+  const fab = $('.fab');
+  let pastBooking = false, nearEnquiry = false;
+  function updateFab() {
+    const show = pastBooking && !nearEnquiry && !menuOpen;
+    fab.classList.toggle('show', show);
+    fab.setAttribute('aria-hidden', String(!show));
+    fab.tabIndex = show ? 0 : -1;
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => { pastBooking = !en.isIntersecting && en.boundingClientRect.top < 0; updateFab(); }).observe($('.booking-card'));
+    new IntersectionObserver(([en]) => { nearEnquiry = en.isIntersecting; updateFab(); }, { rootMargin: '0px 0px -30% 0px' }).observe($('#enquire'));
+  }
+
+  const goToBooking = () => {
+    const card = $('.booking-card');
+    const done = () => {
+      $('#b-start').focus({ preventScroll: true });
+      card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
+    };
+    if (smoother) { smoother.scrollTo($('#top'), true, 'top top'); setTimeout(done, 1100); }
+    else { $('#top').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); setTimeout(done, 700); }
+  };
 
   // anchor links (work with or without the smoother)
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
     const id = a.getAttribute('href');
-    const target = id === '#top' ? $('#top') : $(id);
+    if (id === '#book') {
+      e.preventDefault();
+      const wasOpen = menuOpen;
+      setMenu(false);
+      setTimeout(goToBooking, wasOpen ? 250 : 0);
+      return;
+    }
+    const target = $(id);
     if (!target) return;
     e.preventDefault();
+    const wasOpen = menuOpen;
     setMenu(false);
-    if (smoother) smoother.scrollTo(target, true, 'top top');
-    else target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+    const go = () => {
+      if (smoother) smoother.scrollTo(target, true, 'top top');
+      else target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+    };
+    wasOpen ? setTimeout(go, 250) : go();
   }));
 
   // footer logo = clone of the loader logo
@@ -205,7 +254,7 @@
     end: 'max',
     onUpdate: self => {
       header.classList.toggle('scrolled', self.scroll() > 80);
-      header.classList.toggle('hidden', self.direction === 1 && self.scroll() > 600 && !nav.classList.contains('open'));
+      header.classList.toggle('hidden', self.direction === 1 && self.scroll() > 600 && !menuOpen);
     },
     onLeaveBack: () => header.classList.remove('scrolled', 'hidden')
   });

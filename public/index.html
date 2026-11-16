@@ -47,8 +47,27 @@
       <a href="#enquire" data-text="Contact">Contact</a>
     </nav>
     <a class="btn btn-solid header-cta magnetic" href="#enquire"><span class="btn-text">Book your charter</span><span class="btn-dot"></span></a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation"><span></span><span></span><span class="sr-only">Open menu</span></button>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="offcanvas"><span></span><span></span><span class="sr-only">Open menu</span></button>
   </header>
+
+  <!-- MOBILE OFF-CANVAS MENU -->
+  <div class="offcanvas" id="offcanvas" aria-hidden="true" inert>
+    <div class="oc-bg"></div>
+    <nav class="oc-nav" aria-label="Mobile navigation">
+      <a href="#yacht" style="--i:0"><span class="oc-in"><small>01</small>The Yacht</span></a>
+      <a href="#specs" style="--i:1"><span class="oc-in"><small>02</small>Specs</span></a>
+      <a href="#aboard" style="--i:2"><span class="oc-in"><small>03</small>On Board</span></a>
+      <a href="#gallery" style="--i:3"><span class="oc-in"><small>04</small>Gallery</span></a>
+      <a href="#enquire" style="--i:4"><span class="oc-in"><small>05</small>Contact</span></a>
+    </nav>
+    <div class="oc-foot">
+      <a class="btn btn-solid oc-book" href="#book"><span class="btn-text">Book now</span><span class="btn-arrow">→</span></a>
+      <p>Princess Yachts 67 · Mediterranean Sea</p>
+    </div>
+  </div>
+
+  <!-- FLOATING BOOK BUTTON -->
+  <a class="fab" href="#book" aria-hidden="true" tabindex="-1"><span class="fab-dot"></span><span class="fab-text">Book now</span><span class="fab-arrow">→</span></a>
 
   <div id="smooth-wrapper">
     <div id="smooth-content">
