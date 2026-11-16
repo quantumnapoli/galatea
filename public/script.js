@@ -33,6 +33,12 @@
   const footerLogo = logoSvg.cloneNode(true);
   $('.footer-logo').appendChild(footerLogo);
 
+  // specs: boat outline only, cropped to the hull
+  const specsBoat = logoSvg.cloneNode(true);
+  specsBoat.querySelector('.logo-word').remove();
+  specsBoat.setAttribute('viewBox', '39.5 25 553 157');
+  $('.specs-boat').appendChild(specsBoat);
+
 
   /* ---------- booking bar ---------- */
   const bForm = $('#booking-form');
@@ -256,6 +262,22 @@
   gsap.from('.m-copy > *:not(h2)', { y: 40, opacity: 0, duration: 1.2, stagger: .1, ease: 'silk', scrollTrigger: { trigger: '.m-copy', start: 'top 80%' } });
 
   gsap.from('.pillar', { y: 60, opacity: 0, duration: 1.3, stagger: .12, ease: 'silk', scrollTrigger: { trigger: '.pillars', start: 'top 85%' } });
+
+
+  /* ---------- specs ---------- */
+  const S = prepareDraw(specsBoat);
+  gsap.timeline({ scrollTrigger: { trigger: '.specs-visual', start: 'top 80%', end: 'bottom 45%', scrub: 1 } })
+    .to(S.boat, { strokeDashoffset: 0, duration: 1, ease: 'none' })
+    .to(S.boat, { fillOpacity: 1, strokeWidth: 0, duration: .25 }, .85)
+    .from('.specs-dim i', { scaleX: 0, duration: .5, ease: 'power2.out' }, .3)
+    .from('.specs-dim span', { opacity: 0, y: 10, duration: .3 }, .55);
+  gsap.from('.specs-head > p', { y: 30, opacity: 0, duration: 1.2, stagger: .1, ease: 'silk', scrollTrigger: { trigger: '.specs-head', start: 'top 80%' } });
+  gsap.from('.spec', { y: 50, opacity: 0, duration: 1.2, stagger: .1, ease: 'silk', scrollTrigger: { trigger: '.specs-list', start: 'top 88%' } });
+  $$('.spec-num').forEach(el => {
+    const target = parseFloat(el.dataset.value);
+    const o = { v: 0 };
+    gsap.to(o, { v: target, duration: 2.2, ease: 'expo.out', scrollTrigger: { trigger: '.specs-list', start: 'top 88%' }, onUpdate: () => { el.textContent = o.v.toFixed(2); } });
+  });
 
   /* ---------- horizontal spaces ---------- */
   const mm = gsap.matchMedia();

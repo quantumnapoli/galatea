@@ -218,6 +218,36 @@ h2 em{color:var(--brass)}
 .pillar h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,2.4vw,38px);margin:16px 0 12px;letter-spacing:-.01em}
 .pillar p{color:var(--muted);margin:0;font-size:14px}
 
+/* specs */
+.specs{background:var(--paper);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,110px) clamp(40px,6vw,110px);align-items:center}
+.specs-head h2{font-size:clamp(46px,5.6vw,92px);margin-bottom:26px}
+.specs-head>p:not(.overline){color:var(--muted);max-width:40ch;margin:0}
+.specs-visual{color:var(--ink)}
+.specs-boat svg{width:100%;height:auto;overflow:visible;display:block}
+.specs-dim{display:flex;align-items:center;gap:14px;margin-top:22px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
+.specs-dim i{position:relative;flex:1;height:1px;background:currentColor;transform-origin:center}
+.specs-dim .dim-l::before,.specs-dim .dim-r::after{content:"";position:absolute;top:-6px;width:1px;height:13px;background:currentColor}
+.specs-dim .dim-l::before{left:0}
+.specs-dim .dim-r::after{right:0}
+.specs-dim span{white-space:nowrap}
+.specs-list{grid-column:1/-1;margin:0;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr .9fr;border-top:1px solid var(--line)}
+.spec{padding:28px 24px 6px 0;border-right:1px solid var(--line);margin-right:24px}
+.spec:last-child{border-right:0;margin-right:0}
+.spec dt{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:16px 0 0;font-family:var(--serif);font-weight:300;font-size:clamp(40px,4.4vw,72px);line-height:1;letter-spacing:-.02em;display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
+.spec dd small{font-size:.4em;color:var(--brass);letter-spacing:0}
+.spec .spec-text{font-size:.5em;line-height:1.15;letter-spacing:-.01em}
+.spec-sub{margin:8px 0 0;font-size:13px;color:var(--muted)}
+@media (max-width:1100px){
+  .specs{grid-template-columns:1fr}
+  .specs-list{grid-template-columns:1fr 1fr}
+  .spec{border-right:0;margin-right:0;border-bottom:1px solid var(--line);padding-bottom:22px}
+  .spec:first-child{grid-column:1/-1}
+}
+@media (max-width:560px){
+  .specs-dim{font-size:9px;letter-spacing:.16em}
+}
+
 /* spaces horizontal */
 .spaces{background:var(--abyss);color:var(--cream);overflow:hidden}
 .spaces-pin{height:100vh;display:flex;align-items:center;gap:clamp(40px,6vw,100px);padding-left:var(--pad)}
