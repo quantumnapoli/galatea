@@ -138,20 +138,83 @@
     }
   });
 
-  /* ---------- lightbox ---------- */
+  /* ---------- lightbox: browse every photo ---------- */
   const dialog = $('.lightbox');
-  const dImg = $('img', dialog);
-  $$('.g-item').forEach(item => item.addEventListener('click', () => {
-    dImg.src = item.dataset.image;
-    dImg.alt = item.dataset.alt;
-    $('p', dialog).textContent = item.dataset.alt;
+  const dImg = $('.lb-figure img', dialog);
+  const dCap = $('.lb-figure figcaption', dialog);
+  const dCount = $('.lb-count b', dialog);
+  const thumbs = $('.lb-thumbs', dialog);
+  const photos = [];
+  const addPhoto = (src, alt) => { if (!photos.some(p => p.src === src)) photos.push({ src, alt }); return photos.findIndex(p => p.src === src); };
+  $$('.g-item').forEach(item => { item.dataset.index = addPhoto(item.dataset.image, item.dataset.alt); });
+  [
+    ['/media/salone.webp', 'The saloon'],
+    ['/media/salone-2.webp', 'Saloon lounge'],
+    ['/media/cabina-armatoriale.webp', "Owner's cabin"],
+    ['/media/dinet-divano.webp', 'Dinette with sea view'],
+    ['/media/scala.webp', 'Staircase between decks'],
+    ['/media/esterno-02.webp', 'Galatea at sea']
+  ].forEach(([s, a]) => addPhoto(s, a));
+  $$('.space-card').forEach(card => {
+    const img = $('img', card);
+    const i = addPhoto(img.getAttribute('src'), $('h3', card).textContent);
+    card.addEventListener('click', () => openLightbox(i));
+  });
+  $('.lb-count span', dialog).textContent = String(photos.length).padStart(2, '0');
+  photos.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lb-thumb';
+    b.setAttribute('role', 'listitem');
+    b.setAttribute('aria-label', `Photo ${i + 1}: ${p.alt}`);
+    b.innerHTML = `<img src="${p.src}" alt="" loading="lazy">`;
+    b.addEventListener('click', () => show(i));
+    thumbs.appendChild(b);
+  });
+  let current = 0;
+  const preload = i => { const im = new Image(); im.src = photos[(i + photos.length) % photos.length].src; };
+  function show(i, dir = 0) {
+    current = (i + photos.length) % photos.length;
+    const p = photos[current];
+    const apply = () => {
+      dImg.src = p.src; dImg.alt = p.alt; dCap.textContent = p.alt;
+      dCount.textContent = String(current + 1).padStart(2, '0');
+      $$('.lb-thumb', thumbs).forEach((t, k) => t.setAttribute('aria-current', String(k === current)));
+      const t = thumbs.children[current];
+      thumbs.scrollTo({ left: t.offsetLeft - thumbs.clientWidth / 2 + t.offsetWidth / 2, behavior: reduced ? 'auto' : 'smooth' });
+    };
+    if (window.gsap && !reduced && dir) {
+      gsap.to(dImg, { x: -dir * 60, opacity: 0, duration: .25, ease: 'power2.in', onComplete: () => {
+        apply();
+        gsap.fromTo(dImg, { x: dir * 60, opacity: 0 }, { x: 0, opacity: 1, duration: .6, ease: 'expo.out' });
+      } });
+    } else apply();
+    preload(current + 1); preload(current - 1);
+  }
+  function openLightbox(i) {
+    show(i);
     dialog.showModal();
     if (smoother) smoother.paused(true);
-    if (window.gsap && !reduced) gsap.fromTo(dImg, { scale: .92, opacity: 0, clipPath: 'inset(10% 10% 10% 10%)' }, { scale: 1, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'expo.out' });
-  }));
+    if (window.gsap && !reduced) gsap.fromTo(dImg, { scale: .92, opacity: 0, clipPath: 'inset(10% 10% 10% 10%)' }, { scale: 1, opacity: 1, x: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'expo.out' });
+  }
+  $$('.g-item').forEach(item => item.addEventListener('click', () => openLightbox(+item.dataset.index)));
+  $('.lb-prev', dialog).addEventListener('click', () => show(current - 1, -1));
+  $('.lb-next', dialog).addEventListener('click', () => show(current + 1, 1));
+  dialog.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(current + 1, 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1, -1); }
+  });
+  let startX = null;
+  const stage = $('.lb-stage', dialog);
+  stage.addEventListener('pointerdown', e => { startX = e.clientX; });
+  stage.addEventListener('pointerup', e => {
+    if (startX === null) return;
+    const dx = e.clientX - startX; startX = null;
+    if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  });
   dialog.addEventListener('close', () => smoother && smoother.paused(false));
   $('.lightbox-close').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('click', e => { if (e.target === dialog || e.target === stage || e.target === $('.lb-figure', dialog)) dialog.close(); });
 
   /* ---------- enquiry form (Web3Forms) ---------- */
   const form = $('.enquire-form');
