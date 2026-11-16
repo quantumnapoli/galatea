@@ -2,7 +2,7 @@
 
 Sito di presentazione di Galatea (in inglese), realizzato come sito statico con animazioni GSAP 3.13 (ScrollTrigger, ScrollSmoother, SplitText, CustomEase), immagini WebP e video ottimizzato.
 
-Il form di richiesta disponibilità usa Netlify Forms (`charter-enquiry`): le richieste arrivano nella dashboard Netlify, sezione Forms.
+Il form di richiesta disponibilità invia le richieste via email tramite Web3Forms (piano gratuito, 250 invii/mese). La access key è in `public/index.html` ed è pubblica per design: le email arrivano all’indirizzo registrato su web3forms.com.
 
 Il logo vettoriale è in `public/media/galatea-logo.svg` (sfondo trasparente, colore `currentColor`); versioni PNG trasparenti in `galatea-logo-white.png` e `galatea-logo-ink.png`.
 

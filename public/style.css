@@ -80,21 +80,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .menu-toggle{display:none}
 
 /* ---------- HERO ---------- */
-.hero{position:relative;height:100svh;min-height:640px;color:var(--cream);background:var(--abyss);overflow:hidden}
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;gap:clamp(18px,3.5vh,44px);padding:calc(96px + 2vh) var(--pad) clamp(16px,3vh,36px);color:var(--cream);background:var(--abyss);overflow:hidden}
 .hero-frame{position:absolute;inset:0;overflow:hidden;will-change:clip-path}
 .hero-media,.hero-shade{position:absolute;inset:0}
 .hero-media video{width:100%;height:100%;object-fit:cover}
 .hero-media{transform-origin:50% 60%}
 .hero-shade{background:radial-gradient(120% 90% at 20% 80%,rgba(6,20,26,.78),rgba(6,20,26,.15) 60%),linear-gradient(180deg,rgba(6,20,26,.5),transparent 28%,transparent 60%,rgba(6,20,26,.7))}
-.hero-content{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(150px,19vh,200px)}
+.hero-content{position:relative;z-index:2}
 .eyebrow,.overline{font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase}
 .hero-kicker{display:flex;align-items:center;gap:16px;margin:0 0 10px;color:var(--brass-2)}
 .line{width:46px;height:1px;background:currentColor}
-.hero-title{font-family:var(--serif);font-weight:300;font-size:clamp(64px,12.5vw,210px);line-height:.86;letter-spacing:-.035em;margin:0}
+.hero-title{font-family:var(--serif);font-weight:300;font-size:clamp(48px,min(12.5vw,19vh),210px);line-height:.86;letter-spacing:-.035em;margin:0}
 .ht-line{display:block}
 .ht-line:nth-child(2){padding-left:12vw}
 .hero-title em{color:var(--brass-2)}
-.hero-foot{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-top:38px;flex-wrap:wrap}
+.hero-foot{display:flex;justify-content:space-between;align-items:end;gap:20px 40px;margin-top:clamp(14px,3.2vh,38px);flex-wrap:wrap}
 .hero-copy{font-family:var(--serif);font-size:clamp(20px,1.8vw,26px);line-height:1.35;margin:0;font-style:italic;font-weight:300;color:rgba(243,239,230,.85)}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 .hero-bottom{position:absolute;bottom:118px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(243,239,230,.6)}
@@ -105,8 +105,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 
 /* ---------- BOOKING BAR ---------- */
-.booking{position:relative;z-index:3;background:var(--abyss);padding:0 var(--pad) clamp(40px,5vw,70px)}
-.booking-card{position:relative;margin:-96px auto 0;max-width:1240px;display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,4vw,64px);align-items:end;padding:clamp(24px,2.6vw,38px) clamp(22px,3vw,44px);border-radius:14px;background:rgba(10,30,38,.78);border:1px solid var(--line-l);box-shadow:0 40px 80px -30px rgba(0,0,0,.6);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);color:var(--cream)}
+.booking-card{position:relative;z-index:2;width:100%;margin:0;display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,3vw,56px);align-items:end;padding:clamp(16px,2.4vh,32px) clamp(16px,2.6vw,40px);border-radius:14px;background:rgba(6,20,26,.62);border:1px solid var(--line-l);box-shadow:0 40px 80px -30px rgba(0,0,0,.6);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);color:var(--cream)}
 .booking-head .overline{margin-bottom:10px}
 .booking-head h2{font-size:clamp(30px,2.6vw,42px);line-height:1;white-space:nowrap}
 .booking-head h2 em{color:var(--brass-2)}
@@ -140,16 +139,43 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .booking-head h2{white-space:normal}
 }
 @media (max-width:860px){
-  .booking-card{margin-top:-60px}
   .booking-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
   .booking-submit{grid-column:1/-1;justify-content:space-between}
   .b-field:nth-child(3){grid-column:1/-1}
 }
 @media (max-width:560px){
-  .booking{padding-left:16px;padding-right:16px}
   .booking-fields{gap:12px}
   .field-row-3{grid-template-columns:1fr 1fr}
   .field-row-3 .field:last-child{grid-column:1/-1}
+}
+
+/* hero fit: keep the booking card inside the hero at any size */
+.hero .booking-card{box-shadow:0 30px 60px -30px rgba(0,0,0,.55)}
+@media (max-width:1100px){
+  .booking-head h2{display:none}
+  .booking-head .overline{margin:0}
+  .booking-card{gap:14px}
+  .hero-actions .btn-light{display:none}
+}
+@media (max-height:780px) and (min-width:1101px){
+  .booking-head h2{font-size:28px}
+  .b-input,.booking-submit{height:50px}
+  .step{width:34px;height:34px}
+}
+@media (max-height:640px){
+  .hero-kicker{display:none}
+  .hero-copy{display:none}
+  .booking-head{display:none}
+}
+@media (max-width:560px){
+  .hero{padding-top:92px;gap:18px}
+  .hero-actions{display:none}
+  .hero-copy{font-size:18px}
+  .b-input,.booking-submit{height:50px}
+  .b-field label{margin-bottom:6px;font-size:12px}
+  .b-input input{font-size:14px;padding:0 34px 0 12px}
+  .b-icon{right:10px;width:18px;height:18px}
+  .step{width:34px;height:34px}
 }
 
 /* ---------- MARQUEE ---------- */
@@ -302,7 +328,6 @@ h2 em{color:var(--brass)}
   #navigation a::after{display:none}
   #navigation a:hover{color:var(--brass-2)}
   .ht-line:nth-child(2){padding-left:0}
-  .hero-content{bottom:110px}
   .hero-bottom{display:none}
   .hero-bottom span:nth-child(3){display:none}
   .spaces-pin{height:auto;flex-direction:column;align-items:stretch;padding:clamp(90px,12vw,170px) var(--pad)}

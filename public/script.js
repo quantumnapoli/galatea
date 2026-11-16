@@ -98,17 +98,28 @@
   $('.lightbox-close').addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
 
-  /* ---------- enquiry form (Netlify Forms) ---------- */
+  /* ---------- enquiry form (Web3Forms) ---------- */
   const form = $('.enquire-form');
   const note = $('.form-note', form);
+  const fmtDate = v => v ? new Date(v + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+  form.querySelector('[name="redirect"]').value = location.origin + location.pathname + '?sent=1#enquire';
   if (new URLSearchParams(location.search).has('sent')) note.textContent = 'Thank you — we will be in touch within 24 hours.';
   form.addEventListener('submit', async e => {
     e.preventDefault();
+    if (!form.reportValidity()) return;
     const btnText = $('.btn-text', form);
+    const data = Object.fromEntries(new FormData(form));
+    if (data.botcheck) return;
+    delete data.redirect;
+    delete data.botcheck;
+    const when = [fmtDate(data['start-date']), fmtDate(data['end-date'])].filter(Boolean).join(' → ');
+    data.subject = `New charter request — ${data.name}${when ? ', ' + when : ''}${data.guests ? ', ' + data.guests + ' guests' : ''}`;
+    data.replyto = data.email;
     btnText.textContent = 'Sending…';
     try {
-      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() });
-      if (!res.ok) throw new Error(res.status);
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || !out.success) throw new Error(out.message || res.status);
       form.reset();
       note.textContent = 'Thank you — we will be in touch within 24 hours.';
       btnText.textContent = 'Request sent';
@@ -150,7 +161,7 @@
   const heroLines = $$('.ht-line').map(l => SplitText.create(l, { type: 'chars', mask: 'chars' }));
   const heroChars = heroLines.flatMap(s => s.chars);
   gsap.set(heroChars, { yPercent: 115, rotate: 6 });
-  gsap.set('.hero-kicker, .hero-copy, .hero-actions .btn, .hero-bottom', { opacity: 0, y: 30 });
+  gsap.set('.hero-kicker, .hero-copy, .hero-actions .btn', { opacity: 0, y: 30 });
   gsap.set('.site-header', { yPercent: -100 });
   gsap.set('.booking-card', { y: 90, opacity: 0 });
   gsap.set('.hero-frame', { clipPath: 'inset(22% 26% 22% 26% round 8px)' });
@@ -174,7 +185,6 @@
     .to(heroChars, { yPercent: 0, rotate: 0, duration: 1.4, stagger: .035, ease: 'expo.out' }, 'out+=1.3')
     .to('.hero-kicker', { opacity: 1, y: 0, duration: 1 }, 'out+=1.5')
     .to('.hero-copy, .hero-actions .btn', { opacity: 1, y: 0, duration: 1.2, stagger: .1 }, 'out+=1.8')
-    .to('.hero-bottom', { opacity: 1, y: 0, duration: 1 }, 'out+=2')
     .to('.site-header', { yPercent: 0, duration: 1.2 }, 'out+=1.8')
     .to('.booking-card', { y: 0, opacity: 1, duration: 1.4, ease: 'expo.out' }, 'out+=2.1')
     .from('.booking-fields > *', { y: 24, opacity: 0, duration: 1, stagger: .08 }, 'out+=2.3')
@@ -199,7 +209,7 @@
     .to('.hero-frame', { clipPath: 'inset(4% 3% 14% 3% round 22px)', ease: 'none' }, 0)
     .to('.hero-media', { yPercent: 12, scale: 1.08, ease: 'none' }, 0)
     .to('.hero-content', { yPercent: -35, opacity: 0, ease: 'none' }, 0)
-    .to('.hero-bottom', { opacity: 0, ease: 'none' }, 0);
+    .to('.booking-card', { y: -40, opacity: 0, ease: 'power1.in' }, .15);
 
   /* ---------- MARQUEE (velocity reactive) ---------- */
   const marquee = gsap.to('.marquee-track', { xPercent: -50, duration: 28, ease: 'none', repeat: -1 });
