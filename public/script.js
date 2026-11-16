@@ -167,6 +167,7 @@
     if (data.botcheck) return;
     delete data.redirect;
     delete data.botcheck;
+    Object.keys(data).forEach(k => { if (data[k] === '') delete data[k]; });
     const when = [fmtDate(data['start-date']), fmtDate(data['end-date'])].filter(Boolean).join(' → ');
     data.subject = `New charter request — ${data.name}${when ? ', ' + when : ''}${data.guests ? ', ' + data.guests + ' guests' : ''}`;
     data.replyto = data.email;

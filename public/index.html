@@ -239,14 +239,14 @@
               <input type="hidden" name="subject" value="New charter request — Galatea website">
               <input type="hidden" name="from_name" value="Galatea website">
               <input type="hidden" name="redirect" value="">
+              <input type="hidden" id="f-guests" name="guests" value="">
               <p class="hp"><label>Leave empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></p>
               <div class="field"><input id="f-name" name="name" type="text" autocomplete="name" required placeholder=" "><label for="f-name">Full name</label></div>
               <div class="field"><input id="f-email" name="email" type="email" autocomplete="email" required placeholder=" "><label for="f-email">Email</label></div>
-              <div class="field-row field-row-3">
+              <div class="field-row">
                 <div class="field field-fixed"><input id="f-start" name="start-date" type="date"><label for="f-start">Starting date</label></div>
                 <div class="field field-fixed"><input id="f-end" name="end-date" type="date"><label for="f-end">Ending date</label></div>
-                <div class="field field-fixed"><input id="f-guests" name="guests" type="number" inputmode="numeric" min="1" max="12" value="2"><label for="f-guests">Guests</label></div>
-              </div>
+                              </div>
               <div class="field"><textarea id="f-msg" name="message" rows="3" placeholder=" "></textarea><label for="f-msg">Tell us about your trip</label></div>
               <button class="btn btn-light btn-big magnetic" type="submit"><span class="btn-text">Request availability</span><span class="btn-arrow">→</span></button>
               <p class="form-note" role="status"></p>
